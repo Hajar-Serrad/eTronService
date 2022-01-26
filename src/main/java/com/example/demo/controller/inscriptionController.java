@@ -5,10 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.etron.springmvcrestful.model.Inscription;
 import com.etron.springmvcrestful.model.Person;
 import com.example.demo.repositories.inscriptionRepository;
 
@@ -23,29 +25,48 @@ public class inscriptionController {
 	private static Logger logger = LoggerFactory.getLogger(inscriptionController.class);  
 	
 	  @GetMapping("/inscriptions")
-	    public List<Person> getAll() {
+	    public List<Inscription> getAll() {
 	        logger.info("Find all users");
-	        return (List<Person>) inscriptionRepository.findAll();
+	        return (List<Inscription>) inscriptionRepository.findAll();
 	    }
 
-	    /**
-	     * @param id
-	     * @return employee
-	     */
+	    
 	    @GetMapping("/inscriptions/{id}")
-	    public ResponseEntity<Person> getEmployeeById(@PathVariable(value = "id") Long id) throws ResourceAccessException {
-	        Person personne = inscriptionRepository.findById(id)
+	    public ResponseEntity<Inscription> getEmployeeById(@PathVariable(value = "id") Long id) throws ResourceAccessException {
+	    	Inscription inscription = inscriptionRepository.findById(id)
 	        .orElseThrow(() -> new ResourceAccessException("Person not found for this id :: " + id));
 	        
 	        logger.info("Find Employee with ID :  {}", id);
-	        return ResponseEntity.ok().body(personne);
+	        return ResponseEntity.ok().body(inscription);
+	    }
+	    
+	    
+	    @PutMapping("/inscriptions/{id}")
+	    public ResponseEntity<Inscription> updateEmployee(@PathVariable("id") Long id, @RequestBody Inscription inscription) throws ResourceAccessException {
+
+	    	Inscription inscriptionData = inscriptionRepository.findById(id)
+	                 .orElseThrow(() -> new ResourceAccessException("Employee not found for this id :: " + id));
+	        
+	        //set data before update
+	    	inscriptionData.setNom(inscription.getNom());
+	    	inscriptionData.setPrenom(inscription.getPrenom());
+	    	inscriptionData.setAbonnement(inscription.getAbonnement());
+	    	inscriptionData.setAdresse(inscription.getAdresse());
+	    	inscriptionData.setEmail(inscription.getEmail());
+	    	inscriptionData.setMdp(inscription.getMdp());
+	        
+	        Inscription updatedinscription =inscriptionRepository.save(inscriptionData);
+	        
+	        logger.info("Updated inscription with ID :  {}", id);
+	        
+	        return new ResponseEntity<>(updatedinscription, HttpStatus.OK);
 	    }
 	    
 	@PostMapping(path="/inscription")
-	public ResponseEntity<Person> createEmployee(@RequestBody Person personne) throws Exception {
-		Person newPerson =inscriptionRepository.save(personne);
-        logger.info("Created Person with ID : {}", newPerson.getIdPerson());
-        return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
+	public ResponseEntity<Inscription> createEmployee(@RequestBody Inscription inscription) throws Exception {
+		Inscription newinscription =inscriptionRepository.save(inscription);
+        logger.info("Created Person with ID : {}", newinscription.getIdInscription());
+        return new ResponseEntity<>(newinscription, HttpStatus.CREATED);
 		
 	}
 }
