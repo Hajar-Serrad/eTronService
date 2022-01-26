@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
@@ -49,15 +47,18 @@ public class Inscription implements Serializable {
     @Id
     @Column(unique=true, nullable=false, precision=10)
     private int idInscription;
+    @Column(nullable=false, length=50)
+    private String nom;
+    @Column(nullable=false, length=50)
+    private String prenom;
     @Column(nullable=false, length=30)
     private String email;
     @Column(nullable=false, length=10)
     private String mdp;
+    @Column(nullable=false, length=150)
+    private String adresse;
     @OneToMany(mappedBy="inscription")
     private Set<Abonnement> abonnement;
-    @ManyToOne(optional=false)
-    @JoinColumn(name="idPerson", nullable=false)
-    private Person person;
 
     /** Default constructor. */
     public Inscription() {
@@ -80,6 +81,42 @@ public class Inscription implements Serializable {
      */
     public void setIdInscription(int aIdInscription) {
         idInscription = aIdInscription;
+    }
+
+    /**
+     * Access method for nom.
+     *
+     * @return the current value of nom
+     */
+    public String getNom() {
+        return nom;
+    }
+
+    /**
+     * Setter method for nom.
+     *
+     * @param aNom the new value for nom
+     */
+    public void setNom(String aNom) {
+        nom = aNom;
+    }
+
+    /**
+     * Access method for prenom.
+     *
+     * @return the current value of prenom
+     */
+    public String getPrenom() {
+        return prenom;
+    }
+
+    /**
+     * Setter method for prenom.
+     *
+     * @param aPrenom the new value for prenom
+     */
+    public void setPrenom(String aPrenom) {
+        prenom = aPrenom;
     }
 
     /**
@@ -119,6 +156,24 @@ public class Inscription implements Serializable {
     }
 
     /**
+     * Access method for adresse.
+     *
+     * @return the current value of adresse
+     */
+    public String getAdresse() {
+        return adresse;
+    }
+
+    /**
+     * Setter method for adresse.
+     *
+     * @param aAdresse the new value for adresse
+     */
+    public void setAdresse(String aAdresse) {
+        adresse = aAdresse;
+    }
+
+    /**
      * Access method for abonnement.
      *
      * @return the current value of abonnement
@@ -134,24 +189,6 @@ public class Inscription implements Serializable {
      */
     public void setAbonnement(Set<Abonnement> aAbonnement) {
         abonnement = aAbonnement;
-    }
-
-    /**
-     * Access method for person.
-     *
-     * @return the current value of person
-     */
-    public Person getPerson() {
-        return person;
-    }
-
-    /**
-     * Setter method for person.
-     *
-     * @param aPerson the new value for person
-     */
-    public void setPerson(Person aPerson) {
-        person = aPerson;
     }
 
     /**

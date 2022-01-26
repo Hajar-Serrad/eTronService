@@ -5,19 +5,19 @@ package com.etron.springmvcrestful.model;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 @Entity
-public class Person implements Serializable {
+public class Administrateur implements Serializable {
 
     /** Primary key. */
-    protected static final String PK = "idPerson";
+    protected static final String PK = "idAdministrateur";
 
     /**
      * The optimistic lock. Available via standard bean get/set operations.
@@ -45,38 +45,39 @@ public class Person implements Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(unique=true, nullable=false, precision=10)
-    private int idPerson;
-    @Column(nullable=false, length=35)
+    private int idAdministrateur;
+    @Column(nullable=false, length=50)
     private String nom;
-    @Column(nullable=false, length=35)
+    @Column(nullable=false, length=50)
     private String prenom;
     @Column(nullable=false, length=60)
-    private String adresse;
-    @OneToMany(mappedBy="person")
-    private Set<Inscription> inscription;
+    private String email;
+    @Column(nullable=false, length=10)
+    private String mdp;
 
     /** Default constructor. */
-    public Person() {
+    public Administrateur() {
         super();
     }
 
     /**
-     * Access method for idPerson.
+     * Access method for idAdministrateur.
      *
-     * @return the current value of idPerson
+     * @return the current value of idAdministrateur
      */
-    public int getIdPerson() {
-        return idPerson;
+    public int getIdAdministrateur() {
+        return idAdministrateur;
     }
 
     /**
-     * Setter method for idPerson.
+     * Setter method for idAdministrateur.
      *
-     * @param aIdPerson the new value for idPerson
+     * @param aIdAdministrateur the new value for idAdministrateur
      */
-    public void setIdPerson(int aIdPerson) {
-        idPerson = aIdPerson;
+    public void setIdAdministrateur(int aIdAdministrateur) {
+        idAdministrateur = aIdAdministrateur;
     }
 
     /**
@@ -116,71 +117,71 @@ public class Person implements Serializable {
     }
 
     /**
-     * Access method for adresse.
+     * Access method for email.
      *
-     * @return the current value of adresse
+     * @return the current value of email
      */
-    public String getAdresse() {
-        return adresse;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * Setter method for adresse.
+     * Setter method for email.
      *
-     * @param aAdresse the new value for adresse
+     * @param aEmail the new value for email
      */
-    public void setAdresse(String aAdresse) {
-        adresse = aAdresse;
+    public void setEmail(String aEmail) {
+        email = aEmail;
     }
 
     /**
-     * Access method for inscription.
+     * Access method for mdp.
      *
-     * @return the current value of inscription
+     * @return the current value of mdp
      */
-    public Set<Inscription> getInscription() {
-        return inscription;
+    public String getMdp() {
+        return mdp;
     }
 
     /**
-     * Setter method for inscription.
+     * Setter method for mdp.
      *
-     * @param aInscription the new value for inscription
+     * @param aMdp the new value for mdp
      */
-    public void setInscription(Set<Inscription> aInscription) {
-        inscription = aInscription;
+    public void setMdp(String aMdp) {
+        mdp = aMdp;
     }
 
     /**
-     * Compares the key for this instance with another Person.
+     * Compares the key for this instance with another Administrateur.
      *
      * @param other The object to compare to
-     * @return True if other object is instance of class Person and the key objects are equal
+     * @return True if other object is instance of class Administrateur and the key objects are equal
      */
     private boolean equalKeys(Object other) {
         if (this==other) {
             return true;
         }
-        if (!(other instanceof Person)) {
+        if (!(other instanceof Administrateur)) {
             return false;
         }
-        Person that = (Person) other;
-        if (this.getIdPerson() != that.getIdPerson()) {
+        Administrateur that = (Administrateur) other;
+        if (this.getIdAdministrateur() != that.getIdAdministrateur()) {
             return false;
         }
         return true;
     }
 
     /**
-     * Compares this instance with another Person.
+     * Compares this instance with another Administrateur.
      *
      * @param other The object to compare to
      * @return True if the objects are the same
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Person)) return false;
-        return this.equalKeys(other) && ((Person)other).equalKeys(this);
+        if (!(other instanceof Administrateur)) return false;
+        return this.equalKeys(other) && ((Administrateur)other).equalKeys(this);
     }
 
     /**
@@ -192,7 +193,7 @@ public class Person implements Serializable {
     public int hashCode() {
         int i;
         int result = 17;
-        i = getIdPerson();
+        i = getIdAdministrateur();
         result = 37*result + i;
         return result;
     }
@@ -204,8 +205,8 @@ public class Person implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("[Person |");
-        sb.append(" idPerson=").append(getIdPerson());
+        StringBuffer sb = new StringBuffer("[Administrateur |");
+        sb.append(" idAdministrateur=").append(getIdAdministrateur());
         sb.append("]");
         return sb.toString();
     }
@@ -217,7 +218,7 @@ public class Person implements Serializable {
      */
     public Map<String, Object> getPrimaryKey() {
         Map<String, Object> ret = new LinkedHashMap<String, Object>(6);
-        ret.put("idPerson", Integer.valueOf(getIdPerson()));
+        ret.put("idAdministrateur", Integer.valueOf(getIdAdministrateur()));
         return ret;
     }
 
